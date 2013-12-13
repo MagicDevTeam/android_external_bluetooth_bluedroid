@@ -2842,6 +2842,7 @@ tBTM_STATUS BTM_ReadRSSI (BD_ADDR remote_bda, tBTM_CMPL_CB *p_cb)
     return(BTM_UNKNOWN_ADDR);
 }
 
+#if BLE_INCLUDED == TRUE
 /*******************************************************************************
 **
 ** Function         rssi_monitor_hci_cmd_complete
@@ -3167,6 +3168,8 @@ void btm_setup_rssi_threshold_callback(tBTM_RSSI_MONITOR_CMD_CPL_CB cmd_cpl_call
     btm_cb.devcb.p_rssi_monitor_cmd_cpl_cb = cmd_cpl_callback;
     btm_cb.devcb.p_rssi_monitor_event_cb = evt_callback;
 }
+
+#endif
 
 /*******************************************************************************
 **

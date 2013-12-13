@@ -68,6 +68,7 @@
 /************************************************************************************
 **  Local type definitions
 ************************************************************************************/
+#if BLE_INCLUDED == TRUE
 typedef struct
 {
     int       entries;
@@ -96,6 +97,7 @@ typedef struct
         tBTM_RSSI_MONITOR_EVENT_CB_PARAM   rssi_thresh_evt;
     } content;
 }bt_le_lpp_rssi_monitor_evt_cb_t;
+#endif
 
 /************************************************************************************
 **  Static variables
@@ -182,11 +184,13 @@ static int initq(bt_callbacks_t* callbacks)
     ALOGI("initq");
     if(interface_ready()==FALSE)
         return BT_STATUS_NOT_READY; //halbacks have not been initialized for the interface yet, by the adapterservice
+#if BLE_INCLUDED == TRUE
     bt_hal_cbacks->le_extended_scan_result_cb    = callbacks->le_extended_scan_result_cb;
     bt_hal_cbacks->le_lpp_write_rssi_thresh_cb   = callbacks->le_lpp_write_rssi_thresh_cb;
     bt_hal_cbacks->le_lpp_read_rssi_thresh_cb    = callbacks->le_lpp_read_rssi_thresh_cb;
     bt_hal_cbacks->le_lpp_enable_rssi_monitor_cb = callbacks->le_lpp_enable_rssi_monitor_cb;
     bt_hal_cbacks->le_lpp_rssi_threshold_evt_cb  = callbacks->le_lpp_rssi_threshold_evt_cb;
+#endif
     return BT_STATUS_SUCCESS;
 }
 
@@ -454,6 +458,7 @@ int config_hci_snoop_log(uint8_t enable)
     return btif_config_hci_snoop_log(enable);
 }
 
+#if BLE_INCLUDED == TRUE
 static void bt_handle_le_extended_scan(uint16_t event, char *p_param)
 {
     ALOGD("%s: Event %d, Parameter %p enter", __FUNCTION__, event, p_param);
@@ -741,6 +746,7 @@ static bt_status_t bt_le_lpp_read_rssi_threshold(const bt_bdaddr_t *remote_bda)
     return btif_transfer_context(bt_le_handle_lpp_monitor_rssi, BT_LE_LPP_READ_RSSI_THRESH,
                                  (char*)&btif_cb, sizeof(bt_le_lpp_monitor_rssi_cb_t), NULL);
 }
+#endif
 
 static const bt_interface_t bluetoothInterface = {
     sizeof(bluetoothInterface),
@@ -773,10 +779,17 @@ static const bt_interface_t bluetoothInterface = {
     NULL,
 #endif
     config_hci_snoop_log,
+#if BLE_INCLUDED == TRUE
     bt_le_extended_scan,
     bt_le_lpp_write_rssi_threshold,
     bt_le_lpp_enable_rssi_monitor,
     bt_le_lpp_read_rssi_threshold,
+#else
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+#endif
 };
 
 const bt_interface_t* bluetooth__get_bluetooth_interface ()
