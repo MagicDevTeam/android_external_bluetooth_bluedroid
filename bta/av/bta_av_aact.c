@@ -1176,12 +1176,6 @@ void bta_av_config_ind (tBTA_AV_SCB *p_scb, tBTA_AV_DATA *p_data)
                              p_evt_cfg->protect_info,
                              AVDT_TSEP_SNK,
                              p_msg->handle);
-            for(count =0; count < BTA_AV_MAX_SEPS; count ++)
-            {
-                if (p_scb->seps[count].av_handle == p_msg->handle)
-                    break;
-            }
-            p_scb->seps[count].p_app_data_cback(BTA_AV_MEDIA_SINK_CFG_EVT, (tBTA_AV_MEDIA*)p_evt_cfg->codec_info);
         }
         else
         {
