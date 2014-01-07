@@ -1106,6 +1106,8 @@ void bta_av_config_ind (tBTA_AV_SCB *p_scb, tBTA_AV_DATA *p_data)
     UINT8   psc_mask = (p_evt_cfg->psc_mask | p_scb->cfg.psc_mask);
     UINT8 local_sep;    /* sep type of local handle on which connection was received */
     UINT8 count = 0;
+    UINT8 i = 0;
+    UINT8 ret = 0;
     tBTA_AV_STR_MSG  *p_msg = (tBTA_AV_STR_MSG *)p_data;
     BT_HDR *p_msg_media;
 
