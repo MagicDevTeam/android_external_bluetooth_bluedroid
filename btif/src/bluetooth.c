@@ -819,6 +819,12 @@ static const bt_interface_t bluetoothInterface = {
     bt_le_lpp_write_rssi_threshold,
     bt_le_lpp_enable_rssi_monitor,
     bt_le_lpp_read_rssi_threshold,
+#else
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+#endif
 #if TEST_APP_INTERFACE == TRUE
     get_testapp_interface
 #else
