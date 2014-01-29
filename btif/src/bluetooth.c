@@ -190,6 +190,7 @@ static int init(bt_callbacks_t* callbacks )
     return BT_STATUS_SUCCESS;
 }
 
+#if BLE_INCLUDED == TRUE
 static int initq(bt_callbacks_t* callbacks)
 {
     ALOGI("initq");
@@ -204,6 +205,7 @@ static int initq(bt_callbacks_t* callbacks)
 #endif
     return BT_STATUS_SUCCESS;
 }
+#endif
 
 
 static int enable( void )
@@ -779,12 +781,16 @@ static bt_status_t bt_le_lpp_read_rssi_threshold(const bt_bdaddr_t *remote_bda)
     return btif_transfer_context(bt_le_handle_lpp_monitor_rssi, BT_LE_LPP_READ_RSSI_THRESH,
                                  (char*)&btif_cb, sizeof(bt_le_lpp_monitor_rssi_cb_t), NULL);
 }
-#endif
+#endif /* BLE_INCLUDED == TRUE */
 
 static const bt_interface_t bluetoothInterface = {
     sizeof(bluetoothInterface),
     init,
+#if BLE_INCLUDED == TRUE
     initq,
+#else
+    NULL,
+#endif
     enable,
     disable,
     cleanup,
@@ -817,6 +823,12 @@ static const bt_interface_t bluetoothInterface = {
     bt_le_lpp_write_rssi_threshold,
     bt_le_lpp_enable_rssi_monitor,
     bt_le_lpp_read_rssi_threshold,
+#else
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+#endif
 #if TEST_APP_INTERFACE == TRUE
     get_testapp_interface
 #else
