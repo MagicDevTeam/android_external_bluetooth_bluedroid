@@ -73,7 +73,6 @@
 /************************************************************************************
 **  Local type definitions
 ************************************************************************************/
-#if BLE_INCLUDED == TRUE
 typedef struct
 {
     int       entries;
@@ -102,7 +101,6 @@ typedef struct
         tBTM_RSSI_MONITOR_EVENT_CB_PARAM   rssi_thresh_evt;
     } content;
 }bt_le_lpp_rssi_monitor_evt_cb_t;
-#endif
 
 /************************************************************************************
 **  Static variables
@@ -196,13 +194,11 @@ static int initq(bt_callbacks_t* callbacks)
     ALOGI("initq");
     if(interface_ready()==FALSE)
         return BT_STATUS_NOT_READY; //halbacks have not been initialized for the interface yet, by the adapterservice
-#if BLE_INCLUDED == TRUE
     bt_hal_cbacks->le_extended_scan_result_cb    = callbacks->le_extended_scan_result_cb;
     bt_hal_cbacks->le_lpp_write_rssi_thresh_cb   = callbacks->le_lpp_write_rssi_thresh_cb;
     bt_hal_cbacks->le_lpp_read_rssi_thresh_cb    = callbacks->le_lpp_read_rssi_thresh_cb;
     bt_hal_cbacks->le_lpp_enable_rssi_monitor_cb = callbacks->le_lpp_enable_rssi_monitor_cb;
     bt_hal_cbacks->le_lpp_rssi_threshold_evt_cb  = callbacks->le_lpp_rssi_threshold_evt_cb;
-#endif
     return BT_STATUS_SUCCESS;
 }
 #endif

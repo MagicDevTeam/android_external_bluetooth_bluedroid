@@ -122,9 +122,9 @@ static void btm_set_lmp_features_host_may_support (UINT8 max_page_number);
 static void btm_get_local_features (void);
 static void btm_issue_host_support_for_lmp_features (void);
 static void btm_read_local_supported_cmds (UINT8 local_controller_id);
-#if BLE_INCLUDED == TRUE
 static void btm_hci_vs_event_handler(UINT8 evt_len, UINT8 *p);
 
+#if BLE_INCLUDED == TRUE
 static void btm_read_ble_local_supported_features (void);
 #endif
 
@@ -166,9 +166,7 @@ void btm_dev_init (void)
     btm_cb.first_disabled_channel = 0xff; /* To allow disabling 0th channel alone */
     btm_cb.last_disabled_channel = 0xff; /* To allow disabling 0th channel alone */
 
-#if BLE_INCLUDED == TRUE
     BTM_RegisterForVSEvents(btm_hci_vs_event_handler, TRUE);
-#endif
 #if (BTM_AUTOMATIC_HCI_RESET == TRUE)
 
 #if (BTM_FIRST_RESET_DELAY > 0)
@@ -2006,7 +2004,6 @@ void btm_vsc_complete (UINT8 *p, UINT16 opcode, UINT16 evt_len,
     }
 }
 
-#if BLE_INCLUDED == TRUE
 /*******************************************************************************
 **
 ** Function         btm_hci_vs_event_handler
@@ -2097,7 +2094,6 @@ tBTM_STATUS BTM_RegisterForVSEvents (tBTM_VS_EVT_CB *p_cb, BOOLEAN is_register)
 
     return (retval);
 }
-#endif
 
 /*******************************************************************************
 **

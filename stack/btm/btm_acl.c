@@ -3194,8 +3194,6 @@ void btm_setup_rssi_threshold_callback(tBTM_RSSI_MONITOR_CMD_CPL_CB cmd_cpl_call
 }
 #endif /* BLE_INCLUDED == TRUE */
 
-#endif
-
 /*******************************************************************************
 **
 ** Function         BTM_ReadLinkQuality
