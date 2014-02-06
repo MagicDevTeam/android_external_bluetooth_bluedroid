@@ -52,9 +52,7 @@ LOCAL_SRC_FILES += \
     ../btif/src/btif_config.c \
     ../btif/src/btif_config_util.cpp \
     ../btif/src/btif_profile_queue.c \
-    ../btif/src/bluetoothTrack.cpp \
-    ../btif/src/btif_l2cap.c \
-    ../btif/src/btif_sdp.c
+    ../btif/src/bluetoothTrack.cpp
 
 # callouts
 LOCAL_SRC_FILES+= \
@@ -138,7 +136,6 @@ LOCAL_SHARED_LIBRARIES := \
     libbt-hci \
     libbt-utils \
     libdl \
-    libutils \
     libmedia
 
 #LOCAL_WHOLE_STATIC_LIBRARIES := libbt-brcm_gki libbt-brcm_stack libbt-brcm_bta

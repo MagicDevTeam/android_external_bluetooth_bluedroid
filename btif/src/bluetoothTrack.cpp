@@ -19,14 +19,8 @@
 #include "bluetoothTrack.h"
 #include <media/AudioTrack.h>
 
-//#define DUMP_PCM_DATA TRUE
-#if (defined(DUMP_PCM_DATA) && (DUMP_PCM_DATA == TRUE))
-FILE *outputPcmSampleFile;
-char outputFilename [50] = "/data/misc/bluedroid/output_sample.pcm";
-#endif
-
 struct BluetoothTrack {
-    android::sp<android::AudioTrack> mTrack;
+    android::AudioTrack* mTrack;
 };
 
 typedef struct BluetoothTrack BluetoothTrack;
@@ -50,9 +44,6 @@ int btCreateTrack(int trackFreq, int channelType)
         track = NULL;
         return ret;
     }
-#if (defined(DUMP_PCM_DATA) && (DUMP_PCM_DATA == TRUE))
-    outputPcmSampleFile = fopen(outputFilename, "ab");
-#endif
     ret = 0;
     track->mTrack->setVolume(1, 1);
     track->mTrack->start();
@@ -61,7 +52,7 @@ int btCreateTrack(int trackFreq, int channelType)
 
 void btStartTrack()
 {
-    if ((track != NULL) && (track->mTrack.get() != NULL))
+    if ((track) && (track->mTrack))
     {
         track->mTrack->start();
     }
@@ -70,22 +61,15 @@ void btStartTrack()
 
 void btDeleteTrack()
 {
-    if ((track != NULL) && (track->mTrack.get() != NULL))
+    if ((track) && (track->mTrack))
     {
         delete track;
     }
-#if (defined(DUMP_PCM_DATA) && (DUMP_PCM_DATA == TRUE))
-    if (outputPcmSampleFile)
-    {
-        fclose(outputPcmSampleFile);
-    }
-    outputPcmSampleFile = NULL;
-#endif
 }
 
 void btPauseTrack()
 {
-    if ((track != NULL) && (track->mTrack.get() != NULL))
+    if ((track) && (track->mTrack))
     {
         track->mTrack->pause();
     }
@@ -93,7 +77,7 @@ void btPauseTrack()
 
 void btStopTrack()
 {
-    if ((track != NULL) && (track->mTrack.get() != NULL))
+    if ((track) && (track->mTrack))
     {
         track->mTrack->stop();
     }
@@ -102,14 +86,8 @@ void btStopTrack()
 int btWriteData(void *audioBuffer, int bufferlen)
 {
     int retval = -1;
-    if ((track != NULL) && (track->mTrack.get() != NULL))
+    if ((track) && (track->mTrack))
     {
-#if (defined(DUMP_PCM_DATA) && (DUMP_PCM_DATA == TRUE))
-        if (outputPcmSampleFile)
-        {
-            fwrite ((audioBuffer), 1, (size_t)bufferlen, outputPcmSampleFile);
-        }
-#endif
         retval = track->mTrack->write(audioBuffer, (size_t)bufferlen);
     }
     return retval;
