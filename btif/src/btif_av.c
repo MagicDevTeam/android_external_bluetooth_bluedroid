@@ -627,8 +627,6 @@ static BOOLEAN btif_av_state_opened_handler(btif_sm_event_t event, void *p_data)
             if (btif_av_cb.flags & BTIF_AV_FLAG_PENDING_START) {
                 if (btif_av_cb.sep == SEP_SNK)
                     btif_a2dp_on_started(NULL, TRUE);
-                else if (btif_av_cb.sep == SEP_SRC)
-                    btif_a2dp_set_rx_flush(FALSE); /*  remove flush state, ready for streaming*/
                 /* pending start flag will be cleared when exit current state */
             }
             btif_sm_change_state(btif_av_cb.sm_handle, BTIF_AV_STATE_STARTED);
@@ -1067,6 +1065,39 @@ void suspend_sink()
         btif_dispatch_sm_event(BTIF_AV_SUSPEND_STREAM_REQ_EVT, NULL, 0);
 }
 
+/*******************************************************************************
+**
+** Function         resume_sink
+**
+** Description      Resumes stream  in case of A2DP Sink
+**
+** Returns          None
+**
+*******************************************************************************/
+void resume_sink()
+{
+    BTIF_TRACE_DEBUG0(" resume Stream called");
+    if (btif_av_cb.sep == SEP_SRC)
+        btif_dispatch_sm_event(BTIF_AV_START_STREAM_REQ_EVT, NULL, 0);
+}
+
+/*******************************************************************************
+**
+** Function         audio_focus_status
+**
+** Description      Updates audio focus state
+**
+** Returns          None
+**
+*******************************************************************************/
+static void audio_focus_status(int is_enable)
+{
+    BTIF_TRACE_DEBUG1(" Audio Focus granted %d",is_enable);
+    if (is_enable == 1)
+        btif_a2dp_set_audio_focus_state(TRUE);
+    else
+        btif_a2dp_set_audio_focus_state(FALSE);
+}
 
 /*******************************************************************************
 **
@@ -1192,6 +1223,8 @@ static const btav_interface_t bt_av_interface = {
     allow_connection,
     is_src,
     suspend_sink,
+    resume_sink,
+    audio_focus_status,
 };
 
 /*******************************************************************************
