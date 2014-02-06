@@ -542,7 +542,7 @@ tHID_STATUS HID_DevReportError(UINT8 error)
             break;
     }
 
-    return hidd_conn_send_data(0, HID_TRANS_HANDSHAKE, handshake_param,
+    return hidd_conn_send_data(0, HID_TRANS_HANDSHAKE, HID_PAR_HANDSHAKE_RSP_ERR_INVALID_REP_ID,
         0, 0, NULL);
 }
 
