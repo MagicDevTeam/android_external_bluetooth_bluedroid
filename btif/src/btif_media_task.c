@@ -1653,7 +1653,7 @@ static void btif_media_task_handle_inc_media(tBT_SBC_HDR*p_msg)
 
 /*******************************************************************************
  **
- ** Function         btif_media_task_handle_inc_media
+ ** Function         btif_media_task_handle_media
  **
  ** Description
  **
